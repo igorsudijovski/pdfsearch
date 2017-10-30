@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+  <Appenders>
+    <Console name="CONSOLE" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss,SSS} | %-35.35c{1} | %m%n"/>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <Root level="debug">
+      <AppenderRef ref="CONSOLE"/>
+    </Root>
+    <Logger name="log4j.logger.org.apache.http" level="debug" additivity="false">
+      <AppenderRef ref="CONSOLE"/>
+    </Logger>
+  </Loggers>
+</Configuration>

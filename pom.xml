@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.pdfsearch</groupId>
+  <artifactId>core</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <pdf.api.version>7.0.4</pdf.api.version>
+  </properties>
+
+  <dependencies>
+    <!-- always needed -->
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>kernel</artifactId>
+      <version>${pdf.api.version}</version>
+    </dependency>
+
+    <!-- always needed -->
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>io</artifactId>
+      <version>${pdf.api.version}</version>
+    </dependency>
+
+    <!-- always needed -->
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>layout</artifactId>
+      <version>${pdf.api.version}</version>
+    </dependency>
+
+    <!-- only needed for forms -->
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>forms</artifactId>
+      <version>${pdf.api.version}</version>
+    </dependency>
+
+    <!-- only needed for PDF/A -->
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>pdfa</artifactId>
+      <version>${pdf.api.version}</version>
+    </dependency>
+    <!--https://logging.apache.org/log4j/2.x/maven-artifacts.html-->
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+
+                </excludes>
+              </artifactSet>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.github.pdfsearch.StringFinderInPdf</mainClass>
+                </transformer>
+                <!--Reason for this: https://stackoverflow.com/a/34946780/131929-->
+                <transformer implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer"/>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.github.edwgiz</groupId>
+            <artifactId>maven-shade-plugin.log4j2-cachefile-transformer</artifactId>
+            <version>2.8.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
